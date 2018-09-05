@@ -1,4 +1,4 @@
-import { isStr, isNum, h2n, d2n, agl2trn, str2num, HSLA2RGB } from './utils'
+import { isStr, isNum, h2n, d2n, agl2trn, str2num, HSLA2RGB, num2str } from './utils'
 
 const str2RGBAArr = str => {
   const _mArr = [
@@ -50,11 +50,12 @@ function rtn(...args) {
   let RGBA = []
   if (argLen < 1) throw new Error('no input detected')
   if (argLen === 1) {
-    const arg0 = args[0].toLowerCase()
+    const arg0 = args[0]
     if (isStr(arg0)) {
-      RGBA = str2RGBAArr(arg0)
+      RGBA = str2RGBAArr(arg0.toLowerCase())
     } else if (isNum(arg0)) {
       if (arg0 > 0xffffff || arg0 < 0) invalid()
+      RGBA = str2RGBAArr(num2str(arg0))
     } else invalid()
     console.log('RGBAArr', RGBA)
   }
@@ -68,5 +69,4 @@ rtn('rgb(1, 1, 1)')
 rtn('rgba(22, 22, 22, .8)')
 rtn('hsl(11, 89%, 89%)')
 rtn('hsla(11, 89%, 89%, .8)')
-
-console.log((0x0ff).toString(16))
+rtn(0xfff)

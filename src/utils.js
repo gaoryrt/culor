@@ -2,6 +2,13 @@ const isStr = a => Object.prototype.toString.call(a) === '[object String]'
 const isNum = a => !isNaN(parseFloat(a)) && isFinite(a)
 const h2n = hex => parseInt(hex, 16)
 const d2n = dec => parseInt(dec, 10)
+const num2str = hex => {
+  if (hex <= 0xfff) console.warn('three-digit form hex color may cause problem (0xfff === 0x000fff)')
+  let rtn = hex.toString(16)
+  while (rtn.length < 6) rtn = '0' + rtn
+  return '#' + rtn
+}
+
 const agl2trn = str => {
   const mt = /^(\d+(?:\.\d+)?|\.\d+)(.*?)$/.exec(str)
   const deObj = {
@@ -50,4 +57,5 @@ const HSLA2RGB = (H, S, L, A) => {
   }
   return [R, G, B, A]
 }
-export { isStr, isNum, h2n, d2n, agl2trn, str2num, HSLA2RGB }
+
+export { isStr, isNum, h2n, d2n, agl2trn, str2num, HSLA2RGB, num2str }

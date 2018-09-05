@@ -1,0 +1,9 @@
+{
+  "name": "roloc",
+  "version": "0.0.1",
+  "description": "just nother color converter",
+  "main": "dist/roloc.min.js",
+  "author": "gaoryrt",
+  "license": "MIT",
+  "private": false
+}

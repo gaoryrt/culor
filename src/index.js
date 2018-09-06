@@ -1,4 +1,33 @@
-import { isStr, isNum, h2n, d2n, agl2trn, HSLA2RGB, num2str, per2dec } from './utils'
+import { isStr, isNum, parse, agl2trn, HSLA2RGB, num2str, per2bin } from './utils'
+
+const hex = parse({sys: 16, max: 255})
+const dec = parse({sys: 10, max: 255})
+const bin = parse({sys: 10, max: 1, fn: parseFloat})
+const any = s => isStr(s) ? per2bin(s) : bin(s)
+
+function rgb(r, g, b) {
+  return [dec(r), dec(g), dec(b), 1]
+}
+
+function rgba(r, g, b, a) {
+  return [dec(r), dec(g), dec(b), bin(a)]
+}
+
+function hsl_any(h, s, l) {
+  return HSLA2RGB(agl2trn(h), any(s), any(l), 1)
+}
+
+function hsla_any(h, s, l, a) {
+  return HSLA2RGB(agl2trn(h), any(s), any(l), bin(a))
+}
+
+function hsl_str(h, s, l) {
+  return HSLA2RGB(agl2trn(h), per2bin(s), per2bin(l), 1)
+}
+
+function hsla_str(h, s, l, a) {
+  return HSLA2RGB(agl2trn(h), per2bin(s), per2bin(l), bin(a))
+}
 
 const str2RGBAArr = str => {
   const _mArr = [
@@ -8,32 +37,32 @@ const str2RGBAArr = str => {
         const A = mt[1]
         const B = mt[2]
         const C = mt[3]
-        return [h2n(A + A), h2n(B + B), h2n(C + C), 1]
+        return [hex(A + A), hex(B + B), hex(C + C), 1]
       }
     },
     {
       reg: /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/,
-      fn: mt => [h2n(mt[1]), h2n(mt[2]), h2n(mt[3]), 1]
+      fn: mt => [hex(mt[1]), hex(mt[2]), hex(mt[3]), 1]
     },
     {
       reg: /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/,
-      fn: mt => [d2n(mt[1]), d2n(mt[2]), d2n(mt[3]), 1]
+      fn: ([_, ...args]) => rgb(...args)
     },
     {
       reg: /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/,
-      fn: mt => [h2n(mt[1]), h2n(mt[2]), h2n(mt[3]), h2n(mt[4])]
+      fn: mt => [hex(mt[1]), hex(mt[2]), hex(mt[3]), hex(mt[4])]
     },
     {
       reg: /^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d+(?:\.\d+)?|\.\d+)\)$/,
-      fn: mt => [d2n(mt[1]), d2n(mt[2]), d2n(mt[3]), parseFloat(mt[4])]
+      fn: ([_, ...args]) => rgba(...args)
     },
     {
       reg: /^hsl\((.+?),\s*(.+?),\s*(.+?)\)$/,
-      fn: mt => HSLA2RGB(agl2trn(mt[1]), per2dec(mt[2]) || d2n(mt[2]), per2dec(mt[3]) || d2n(mt[3]), 1)
+      fn: ([_, ...args]) => hsl_str(...args)
     },
     {
       reg: /^hsla\((.+?),\s*(.+?),\s*(.+?),\s*(\d+(?:\.\d+)?|\.\d+)\)$/,
-      fn: mt => HSLA2RGB(agl2trn(mt[1]), per2dec(mt[2]) || d2n(mt[2]), per2dec(mt[3]) || d2n(mt[3]), parseFloat(mt[4]))
+      fn: ([_, ...args]) => hsla_str(...args)
     }
   ]
   for (let o of _mArr) {
@@ -53,9 +82,10 @@ function color(str) {
 }
 
 // export default color
-console.log(color('rgba(255, 22, 22, .8)'))
+// console.log(color('rgb(255, 22, 22)'))
 // console.log(color(0xffffff))
 // console.log(color('rgb(1, 1, 255)'))
 // color('rgba(22, 22, 22, .8)')
 // color('hsl(11, 89%, 89%)')
-// color('hsla(11, 89%, 89%, .8)')
+console.log(color('hsla(11, 89%, 89%, .8)'))
+console.log(hsl_any(11, .89, '89%', .8))

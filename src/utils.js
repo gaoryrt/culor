@@ -1,9 +1,10 @@
 const isStr = a => Object.prototype.toString.call(a) === '[object String]'
 const isNum = a => !isNaN(parseFloat(a)) && isFinite(a)
-const h2n = hex => parseInt(hex, 16)
-const d2n = (dec, max = 255, min = 0) => {
-  if (dec < min || dec > max) throw new Error(dec + ' is not between ' + min + ' and ' + max)
-  return parseInt(dec, 10)
+
+const parse = ({sys, max, min = 0, fn = parseInt}) => str => {
+  const rtn = fn(str, sys)
+  if (rtn < min || rtn > max) throw new Error(str + ' is not between ' + min + ' and ' + max)
+  return rtn
 }
 
 /**
@@ -21,6 +22,8 @@ const num2str = hex => {
 
 /**
  * angleString to turn
+ * 'When written as a unitless <number>, it is interpreted as degrees'
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#hsl()_and_hsla()
  * @param {String} str angle string
  * '360'       -> 1
  * '720deg'    -> 1
@@ -29,15 +32,15 @@ const num2str = hex => {
  * '1turn'     -> 1
  */
 const agl2trn = str => {
-  const mt = /^(\d+(?:\.\d+)?|\.\d+)(.*?)$/.exec(str)
+  const mt = /^(-?\d+(?:\.\d+)?|\.\d+)(.*?)$/.exec(str)
   const deObj = {
     deg: 360,
     rad: 2 * Math.PI,
     grad: 400,
-    turn: 1
+    turn: 1,
+    '': 360
   }
   if (!mt) throw new Error(str + ' is not an angle')
-  if (!mt[2]) return parseFloat(mt[1]) / 360
   return (parseFloat(mt[1]) / deObj[mt[2].toLowerCase()]) % 1
 }
 
@@ -48,10 +51,10 @@ const agl2trn = str => {
  * '200%' -> 2
  * '200' -> false
  */
-const per2dec = str => {
+const per2bin = str => {
+  if (!isStr(str)) throw new Error(str + ' is not a string')
   const mt = /^(\d+(?:\.\d+)?|\.\d+)%$/.exec(str)
   if (!mt) return false
-  if (mt[1] > 100) throw new Error('invalid input: ' + str + ' > 100%')
   return mt[1] / 100
 }
 
@@ -87,4 +90,4 @@ const HSLA2RGB = (H, S, L, A) => {
   return [R, G, B, A]
 }
 
-export { isStr, isNum, h2n, d2n, agl2trn, HSLA2RGB, num2str, per2dec }
+export { isStr, isNum, parse, agl2trn, HSLA2RGB, num2str, per2bin }

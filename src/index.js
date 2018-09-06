@@ -1,9 +1,11 @@
 import colors from 'css-color-names'
 import { isStr, isNum, parse, agl2trn, HSLA2RGB, num2str, per2bin } from './utils'
+const invalid = str => {throw new Error('invalid input: ' + str)}
 
-const hex = parse({sys: 16, max: 255})
-const dec = parse({sys: 10, max: 255})
-const bin = parse({sys: 10, max: 1, fn: parseFloat})
+
+const hex = parse({sys: 16})
+const dec = parse({})
+const bin = parse({max: 1, fn: parseFloat})
 const any = s => isStr(s) ? per2bin(s) : bin(s)
 
 function rgb(r, g, b) {
@@ -11,7 +13,7 @@ function rgb(r, g, b) {
 }
 
 function rgba(r, g, b, a) {
-  return [dec(r), dec(g), dec(b), bin(a)]
+  return [dec(r), dec(g), dec(b), bin(a) || 1]
 }
 
 function hsl(h, s, l) {
@@ -19,7 +21,7 @@ function hsl(h, s, l) {
 }
 
 function hsla(h, s, l, a) {
-  return HSLA2RGB(agl2trn(h), any(s), any(l), bin(a))
+  return HSLA2RGB(agl2trn(h), any(s), any(l), bin(a) || 1)
 }
 
 const str2RGBAArr = str => {
@@ -67,23 +69,42 @@ const str2RGBAArr = str => {
     const o = _mArr[1]
     return o.fn(o.reg.exec(rtn))
   }
-  throw new Error('invalid input: ' + str)
+  invalid(str)
 }
 
 function color(str) {
-  const invalid = () => {throw new Error('invalid input: ' + str)}
-  if (isStr(str)) return str2RGBAArr(str.toLowerCase())
+  if (isStr(str)) return new Color(str2RGBAArr(str.toLowerCase()))
   else if (isNum(str)) {
-    if (str > 0xffffff || str < 0) invalid()
-    return str2RGBAArr(num2str(str))
-  } else invalid()
+    if (str > 0xffffff || str < 0) invalid(str)
+    return new Color(str2RGBAArr(num2str(str)))
+  } else invalid(str)
 }
 
-// export default color
-// console.log(color('rgb(255, 22, 22)'))
-// console.log(color(0xffffff))
-// console.log(color('rgb(1, 1, 255)'))
-// color('rgba(22, 22, 22, .8)')
-// color('hsl(11, 89%, 89%)')
-// console.log(color('hsla(11, 89%, 89%, .8)'))
-// console.log(hsl(11, .89, '89%'))
+const RGB = (...args) => new Color(rgb(...args))
+const RGBA = (...args) => new Color(rgba(...args))
+const HSL = (...args) => new Color(hsl(...args))
+const HSLA = (...args) => new Color(hsla(...args))
+
+function Color(rgba) {
+  this.r = rgba[0]
+  this.g = rgba[1]
+  this.b = rgba[2]
+  this.a = rgba[3]
+}
+
+Color.prototype.toHex = function() {
+  const toHex = num => {
+    let rtn = Math.round(num).toString(16)
+    while (rtn.length < 2) rtn = '0' + rtn
+    return rtn
+  }
+  return '#' + toHex(this.r) + toHex(this.g) + toHex(this.b)
+}
+
+export {
+  color,
+  RGB,
+  RGBA,
+  HSL,
+  HSLA
+}

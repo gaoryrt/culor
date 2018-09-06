@@ -1,9 +1,9 @@
 const isStr = a => Object.prototype.toString.call(a) === '[object String]'
 const isNum = a => !isNaN(parseFloat(a)) && isFinite(a)
 
-const parse = ({sys, max, min = 0, fn = parseInt}) => str => {
+const parse = ({sys = 10, max = 255, fn = parseInt}) => str => {
   const rtn = fn(str, sys)
-  if (rtn < min || rtn > max) throw new Error(str + ' is not between ' + min + ' and ' + max)
+  if (rtn < 0 || rtn > max) throw new Error(str + ' is not between ' + 0 + ' and ' + max)
   return rtn
 }
 

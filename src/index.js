@@ -1,3 +1,4 @@
+import colors from 'css-color-names'
 import { isStr, isNum, parse, agl2trn, HSLA2RGB, num2str, per2bin } from './utils'
 
 const hex = parse({sys: 16, max: 255})
@@ -61,6 +62,11 @@ const str2RGBAArr = str => {
     let m = o.reg.exec(str)
     if (m) return o.fn(m)
   }
+  const rtn = colors[str]
+  if (rtn) {
+    const o = _mArr[1]
+    return o.fn(o.reg.exec(rtn))
+  }
   throw new Error('invalid input: ' + str)
 }
 
@@ -80,4 +86,4 @@ function color(str) {
 // color('rgba(22, 22, 22, .8)')
 // color('hsl(11, 89%, 89%)')
 // console.log(color('hsla(11, 89%, 89%, .8)'))
-console.log(hsl(11, .89, '89%'))
+// console.log(hsl(11, .89, '89%'))

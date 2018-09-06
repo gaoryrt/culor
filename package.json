@@ -6,6 +6,10 @@
   "author": "gaoryrt",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "build": "poi build src/index.js --filename.js culor.min.js --format umd",
+    "dev": "poi src/test.js"
+  },
   "dependencies": {
     "css-color-names": "^0.0.4"
   },

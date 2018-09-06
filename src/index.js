@@ -29,44 +29,33 @@ const str2RGBAArr = str => {
     },
     {
       reg: /^hsl\((.+?),\s*(.+?),\s*(.+?)\)$/,
-      fn: mt => HSLA2RGB(agl2trn(mt[1]) % 1, per2dec(mt[2]) || d2n(mt[2]), per2dec(mt[3]) || d2n(mt[3]), 1)
+      fn: mt => HSLA2RGB(agl2trn(mt[1]), per2dec(mt[2]) || d2n(mt[2]), per2dec(mt[3]) || d2n(mt[3]), 1)
     },
     {
       reg: /^hsla\((.+?),\s*(.+?),\s*(.+?),\s*(\d+(?:\.\d+)?|\.\d+)\)$/,
-      fn: mt => HSLA2RGB(agl2trn(mt[1]) % 1, per2dec(mt[2]) || d2n(mt[2]), per2dec(mt[3]) || d2n(mt[3]), parseFloat(mt[4]))
+      fn: mt => HSLA2RGB(agl2trn(mt[1]), per2dec(mt[2]) || d2n(mt[2]), per2dec(mt[3]) || d2n(mt[3]), parseFloat(mt[4]))
     }
   ]
   for (let o of _mArr) {
     let m = o.reg.exec(str)
     if (m) return o.fn(m)
   }
+  throw new Error('invalid input: ' + str)
 }
 
-function roloc(...args) {
-  const invalid = () => {
-    throw new Error('invalid input: ' + args)
-  }
-  const argLen = args.length
-  let RGBA = []
-  if (argLen < 1) throw new Error('no input detected')
-  if (argLen === 1) {
-    const arg0 = args[0]
-    if (isStr(arg0)) {
-      RGBA = str2RGBAArr(arg0.toLowerCase())
-    } else if (isNum(arg0)) {
-      if (arg0 > 0xffffff || arg0 < 0) invalid()
-      RGBA = str2RGBAArr(num2str(arg0))
-    } else invalid()
-    console.log('RGBAArr', RGBA)
-  }
-  if (argLen >= 2) invalid()
-  return RGBA
+function color(str) {
+  const invalid = () => {throw new Error('invalid input: ' + str)}
+  if (isStr(str)) return str2RGBAArr(str.toLowerCase())
+  else if (isNum(str)) {
+    if (str > 0xffffff || str < 0) invalid()
+    return str2RGBAArr(num2str(str))
+  } else invalid()
 }
 
-// export default roloc
-roloc('#ffffff')
-roloc('rgb(1, 1, 1)')
-roloc('rgba(22, 22, 22, .8)')
-roloc('hsl(11, 89%, 89%)')
-roloc('hsla(11, 89%, 89%, .8)')
-console.log(roloc(0xffffff))
+// export default color
+console.log(color('rgba(255, 22, 22, .8)'))
+// console.log(color(0xffffff))
+// console.log(color('rgb(1, 1, 255)'))
+// color('rgba(22, 22, 22, .8)')
+// color('hsl(11, 89%, 89%)')
+// color('hsla(11, 89%, 89%, .8)')

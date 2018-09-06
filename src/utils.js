@@ -1,7 +1,10 @@
 const isStr = a => Object.prototype.toString.call(a) === '[object String]'
 const isNum = a => !isNaN(parseFloat(a)) && isFinite(a)
 const h2n = hex => parseInt(hex, 16)
-const d2n = dec => parseInt(dec, 10)
+const d2n = (dec, max = 255, min = 0) => {
+  if (dec < min || dec > max) throw new Error(dec + ' is not between ' + min + ' and ' + max)
+  return parseInt(dec, 10)
+}
 
 /**
  * number to HexString
@@ -20,9 +23,9 @@ const num2str = hex => {
  * angleString to turn
  * @param {String} str angle string
  * '360'       -> 1
- * '360deg'    -> 1
+ * '720deg'    -> 1
  * '3.1416rad' -> 0.4984096197865795
- * '400grad'   -> 1
+ * '800grad'   -> 1
  * '1turn'     -> 1
  */
 const agl2trn = str => {
@@ -35,7 +38,7 @@ const agl2trn = str => {
   }
   if (!mt) throw new Error(str + ' is not an angle')
   if (!mt[2]) return parseFloat(mt[1]) / 360
-  return parseFloat(mt[1]) / deObj[mt[2].toLowerCase()]
+  return (parseFloat(mt[1]) / deObj[mt[2].toLowerCase()]) % 1
 }
 
 /**
@@ -48,6 +51,7 @@ const agl2trn = str => {
 const per2dec = str => {
   const mt = /^(\d+(?:\.\d+)?|\.\d+)%$/.exec(str)
   if (!mt) return false
+  if (mt[1] > 100) throw new Error('invalid input: ' + str + ' > 100%')
   return mt[1] / 100
 }
 

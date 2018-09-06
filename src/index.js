@@ -13,20 +13,12 @@ function rgba(r, g, b, a) {
   return [dec(r), dec(g), dec(b), bin(a)]
 }
 
-function hsl_any(h, s, l) {
+function hsl(h, s, l) {
   return HSLA2RGB(agl2trn(h), any(s), any(l), 1)
 }
 
-function hsla_any(h, s, l, a) {
+function hsla(h, s, l, a) {
   return HSLA2RGB(agl2trn(h), any(s), any(l), bin(a))
-}
-
-function hsl_str(h, s, l) {
-  return HSLA2RGB(agl2trn(h), per2bin(s), per2bin(l), 1)
-}
-
-function hsla_str(h, s, l, a) {
-  return HSLA2RGB(agl2trn(h), per2bin(s), per2bin(l), bin(a))
 }
 
 const str2RGBAArr = str => {
@@ -58,11 +50,11 @@ const str2RGBAArr = str => {
     },
     {
       reg: /^hsl\((.+?),\s*(.+?),\s*(.+?)\)$/,
-      fn: ([_, ...args]) => hsl_str(...args)
+      fn: m => HSLA2RGB(agl2trn(m[1]), per2bin(m[2]), per2bin(m[3]), 1)
     },
     {
       reg: /^hsla\((.+?),\s*(.+?),\s*(.+?),\s*(\d+(?:\.\d+)?|\.\d+)\)$/,
-      fn: ([_, ...args]) => hsla_str(...args)
+      fn: m => HSLA2RGB(agl2trn(m[1]), per2bin(m[2]), per2bin(m[3]), bin(m[4]))
     }
   ]
   for (let o of _mArr) {
@@ -87,5 +79,5 @@ function color(str) {
 // console.log(color('rgb(1, 1, 255)'))
 // color('rgba(22, 22, 22, .8)')
 // color('hsl(11, 89%, 89%)')
-console.log(color('hsla(11, 89%, 89%, .8)'))
-console.log(hsl_any(11, .89, '89%', .8))
+// console.log(color('hsla(11, 89%, 89%, .8)'))
+console.log(hsl(11, .89, '89%'))

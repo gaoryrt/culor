@@ -1,5 +1,5 @@
 import colors from 'css-color-names'
-import { isStr, isNum, parse, agl2trn, HSLA2RGB, num2str, per2bin } from './utils'
+import { isStr, isNum, parse, agl2trn, HSL2RGB, RGB2HSL, num2str, per2bin } from './utils'
 const invalid = str => {throw new Error('invalid input: ' + str)}
 
 
@@ -17,11 +17,11 @@ function rgba(r, g, b, a) {
 }
 
 function hsl(h, s, l) {
-  return HSLA2RGB(agl2trn(h), any(s), any(l), 1)
+  return HSL2RGB(agl2trn(h), any(s), any(l)).concat(1)
 }
 
 function hsla(h, s, l, a) {
-  return HSLA2RGB(agl2trn(h), any(s), any(l), bin(a) || 1)
+  return HSL2RGB(agl2trn(h), any(s), any(l)).concat(bin(a) || 1)
 }
 
 const str2RGBAArr = str => {
@@ -53,11 +53,11 @@ const str2RGBAArr = str => {
     },
     {
       reg: /^hsl\((.+?),\s*(.+?),\s*(.+?)\)$/,
-      fn: m => HSLA2RGB(agl2trn(m[1]), per2bin(m[2]), per2bin(m[3]), 1)
+      fn: m => HSL2RGB(agl2trn(m[1]), per2bin(m[2]), per2bin(m[3])).concat(1)
     },
     {
       reg: /^hsla\((.+?),\s*(.+?),\s*(.+?),\s*(\d+(?:\.\d+)?|\.\d+)\)$/,
-      fn: m => HSLA2RGB(agl2trn(m[1]), per2bin(m[2]), per2bin(m[3]), bin(m[4]))
+      fn: m => HSL2RGB(agl2trn(m[1]), per2bin(m[2]), per2bin(m[3])).concat(bin(m[4]))
     }
   ]
   for (let o of _mArr) {
@@ -90,15 +90,26 @@ function Color(rgba) {
   this.g = rgba[1]
   this.b = rgba[2]
   this.a = rgba[3]
-}
-
-Color.prototype.toHex = function() {
   const toHex = num => {
     let rtn = Math.round(num).toString(16)
     while (rtn.length < 2) rtn = '0' + rtn
     return rtn
   }
-  return '#' + toHex(this.r) + toHex(this.g) + toHex(this.b)
+  const r = Math.round
+  this.Hex = () => '#' + toHex(this.r) + toHex(this.g) + toHex(this.b)
+  this.HexA = () => this.Hex() + toHex(this.a * 255)
+  this.RGB = () => `rgb(${r(this.r)}, ${r(this.g)}, ${r(this.b)})`
+  this.RGBA = () => `rgba(${r(this.r)}, ${r(this.g)}, ${r(this.b)}, ${this.a})`
+  const [h, s, l] = RGB2HSL(this.r, this.g, this.b)
+  this.HSL = () => `hsl(${r(h * 360)}, ${r(s * 100)}%, ${r(l * 100)}%)`
+  this.HSLA = () => `hsl(${r(h * 360)}, ${r(s * 100)}%, ${r(l * 100)}%, ${this.a})`
+  this.keywords = () => {
+    const hex = this.Hex()
+    for (let i in colors) {
+      if (colors[i] === hex) return i
+    }
+    console.warn('no matched color')
+  }
 }
 
 export {

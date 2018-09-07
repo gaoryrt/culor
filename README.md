@@ -64,6 +64,9 @@ const hsla = HSLA('360deg', 1, '67%', .7)
 ## To-Do
 
 [ ] support rgb() / rgba() percentage unit.
+[x] .Hex(A) .RGB(A) .HSL(A)
+[x] HSLA2RGB -> HSL2RGB
+[x] .keywords
 
 ## Contributing
 

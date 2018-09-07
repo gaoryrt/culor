@@ -65,7 +65,7 @@ const per2bin = str => {
  * @param {Number} L [0, 1)
  * @param {Number} A [0, 1)
  */
-const HSLA2RGB = (H, S, L, A) => {
+const HSL2RGB = (H, S, L) => {
   const Hue2RGB = (v1, v2, vH) => {
     if (vH < 0) vH += 1
     if (vH > 1) vH -= 1
@@ -87,7 +87,33 @@ const HSLA2RGB = (H, S, L, A) => {
     G = 255 * Hue2RGB(t0, t1, H)
     B = 255 * Hue2RGB(t0, t1, H - 1 / 3)
   }
-  return [R, G, B, A]
+  return [R, G, B]
 }
 
-export { isStr, isNum, parse, agl2trn, HSLA2RGB, num2str, per2bin }
+const RGB2HSL = (R, G, B) => {
+  let H, S, L
+  const [r, g, b] = [R / 255, G / 255, B / 255]
+  const min = Math.min(r, g, b)
+  const max = Math.max(r, g, b)
+  const _max = max - min
+
+  L = (max + min) / 2
+
+  if (_max === 0) return [0, 0, L]
+  else {
+    S = _max / (L < .5 ? (max + min) : (2 - max - min))
+    const t = i => (((max - i) / 6) + (_max / 2)) / _max
+    const _r = t(r)
+    const _g = t(g)
+    const _b = t(b)
+    if (_r === max) H = _b - _g
+    else if (_g === max) (1 / 3) + _r - _b
+    else H = (2 / 3) + _g - _r
+    
+    if (H < 0) H += 1
+    if (H > 1) H -= 1
+    return [H, S, L]
+  }
+}
+
+export { isStr, isNum, parse, agl2trn, HSL2RGB, RGB2HSL, num2str, per2bin }

@@ -59,7 +59,7 @@ const hsla = HSLA('360deg', 1, '67%', .7)
 | `H`        | `String` | hue [angel](https://developer.mozilla.org/en-US/docs/Web/CSS/angle) |
 | `S`        | `Number` `String` | saturation can be a number [0, 1], or a string between '0%' and '100%' |
 | `L`        | `Number` `String` | lightness can be a number [0, 1], or a string between '0%' and '100%' |
-| `A`        | `Number` `String` | alpha can be a number [0, 1], or a string between '0%' and '100%' |
+| `A`        | `Number` `String` | alpha can be a number [0, 1], or a string between '0' and '1' |
 
 ## To-Do
 

@@ -1,6 +1,6 @@
 {
   "name": "culor",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "description": "just nother color converter",
   "main": "dist/culor.min.js",
   "author": "gaoryrt",

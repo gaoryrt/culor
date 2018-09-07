@@ -1,7 +1,7 @@
 # Culor
 > Just another color converter.
 
-[![https://nodei.co/npm/culor.png?downloads=true&downloadRank=true&stars=true](https://nodei.co/npm/culor.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/culor)
+[![NPM](https://nodei.co/npm/culor.png?compact=true)](https://nodei.co/npm/culor/)
 
 ## Installation
 

@@ -45,7 +45,7 @@ const str2RGBAArr = str => {
     },
     {
       reg: /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/,
-      fn: mt => [hex(mt[1]), hex(mt[2]), hex(mt[3]), hex(mt[4])]
+      fn: mt => [hex(mt[1]), hex(mt[2]), hex(mt[3]), hex(mt[4]) / 255]
     },
     {
       reg: /^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d+(?:\.\d+)?|\.\d+)\)$/,
@@ -102,8 +102,8 @@ function Color(rgba) {
   this.RGBA = () => `rgba(${r(this.r)}, ${r(this.g)}, ${r(this.b)}, ${this.a})`
   const [h, s, l] = RGB2HSL(this.r, this.g, this.b)
   this.HSL = () => `hsl(${r(h * 360)}, ${r(s * 100)}%, ${r(l * 100)}%)`
-  this.HSLA = () => `hsl(${r(h * 360)}, ${r(s * 100)}%, ${r(l * 100)}%, ${this.a})`
-  this.keywords = () => {
+  this.HSLA = () => `hsla(${r(h * 360)}, ${r(s * 100)}%, ${r(l * 100)}%, ${this.a})`
+  this.keyword = () => {
     const hex = this.Hex()
     for (let i in colors) {
       if (colors[i] === hex) return i

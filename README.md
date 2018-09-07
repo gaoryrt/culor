@@ -40,6 +40,17 @@ const hsl = HSL(360, '100%', .67)
 const hsla = HSLA('360deg', 1, '67%', .7)
 ```
 
+```js
+const c = color('#00ff00ff')
+c.Hex()      // '#00ff00'
+c.HexA()     // '#00ff00ff'
+c.RGB()      // 'rgb(0, 255, 0)'
+c.RGBA()     // 'rgba(0, 255, 0, 1)'
+c.HSL()      // 'hsl(120, 100%, 50%)'
+c.HSLA()     // 'hsla(120, 100%, 50%, 1)'
+c.keyword()  // 'lime'
+```
+
 ## Syntax
 
 `color(csscolor)`  
@@ -61,12 +72,24 @@ const hsla = HSLA('360deg', 1, '67%', .7)
 | `L`        | `Number` `String` | lightness can be a number [0, 1], or a string between '0%' and '100%' |
 | `A`        | `Number` `String` | alpha can be a number [0, 1], or a string between '0' and '1' |
 
+### Functions
+
+| Key | Type | Value |
+|:--------|:------|:-----|
+| `.Hex()` | `String` | #RRGGBB |
+| `.HexA()` | `String` | #RRGGBBAA |
+| `.RGB()` | `String` | rgb(r, g, b) |
+| `.RGBA()` | `String` | rgba(r, g, b, a) |
+| `.HSL()` | `String` | hsl(h, s, l) |
+| `.HSLA()` | `String` | hsla(h, s, l, a) |
+| `.keyword()` | `String` | color keyword or undefined |
+
 ## To-Do
 
 [ ] support rgb() / rgba() percentage unit.
 [x] .Hex(A) .RGB(A) .HSL(A)
 [x] HSLA2RGB -> HSL2RGB
-[x] .keywords
+[x] .keyword
 
 ## Contributing
 

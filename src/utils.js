@@ -95,23 +95,20 @@ const RGB2HSL = (R, G, B) => {
   const [r, g, b] = [R / 255, G / 255, B / 255]
   const min = Math.min(r, g, b)
   const max = Math.max(r, g, b)
-  const _max = max - min
+  const del = max - min
 
   L = (max + min) / 2
 
-  if (_max === 0) return [0, 0, L]
+  if (del === 0) return [0, 0, L]
   else {
-    S = _max / (L < .5 ? (max + min) : (2 - max - min))
-    const t = i => (((max - i) / 6) + (_max / 2)) / _max
-    const _r = t(r)
-    const _g = t(g)
-    const _b = t(b)
-    if (_r === max) H = _b - _g
-    else if (_g === max) (1 / 3) + _r - _b
-    else H = (2 / 3) + _g - _r
-    
+    S = del / (L < .5 ? (max + min) : (2 - max - min))
+
+    if (r === max) H = (g - b) / del
+    else if (g === max) H = 2 + (b - r) / del
+    else if (b === max) H = 4 + (r - g) / del
+    H = Math.min(H / 6, 1)
+
     if (H < 0) H += 1
-    if (H > 1) H -= 1
     return [H, S, L]
   }
 }

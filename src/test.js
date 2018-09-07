@@ -1,7 +1,14 @@
 // import { RGB, color, RGBA, HSL, HSLA } from '../dist/culor.min.js'
 import { RGB, color, RGBA, HSL, HSLA } from './index.js'
-const c = color('#f00')
-console.log(c.keywords())
+const c = color('#00ff00')
+console.log(c)
+console.log(c.Hex())
+console.log(c.HexA())
+console.log(c.RGB())
+console.log(c.RGBA())
+console.log(c.HSL())
+console.log(c.HSLA())
+console.log(c.keyword())
 // const rgb = RGB('255', 85, 85).toHex()
 // const rgba = RGBA(255, '85', 85, .7).toHex()
 // const hsl = HSL(360, '100%', .67)

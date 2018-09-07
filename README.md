@@ -86,10 +86,10 @@ c.keyword()  // 'lime'
 
 ## To-Do
 
-[ ] support rgb() / rgba() percentage unit.
-[x] .Hex(A) .RGB(A) .HSL(A)
-[x] HSLA2RGB -> HSL2RGB
-[x] .keyword
+- [ ] support rgb() / rgba() percentage unit.
+- [x] .Hex(A) .RGB(A) .HSL(A)
+- [x] HSLA2RGB -> HSL2RGB
+- [x] .keyword
 
 ## Contributing
 

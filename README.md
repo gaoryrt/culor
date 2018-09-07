@@ -42,24 +42,24 @@ const hsla = HSLA('360deg', 1, '67%', .7)
 
 ## Syntax
 
-`color(csscolor)`
-`RGB(R, G, B)`
-`RGBA(R, G, B, A)`
-`HSL(H, S, L)`
-`HSLA(H, S, L, A)`
+`color(csscolor)`  
+`RGB(R, G, B)`  
+`RGBA(R, G, B, A)`  
+`HSL(H, S, L)`  
+`HSLA(H, S, L, A)`  
 
 ### Parameters
 
 |    Key   |  Type  | Value |
-|:--------:|:------:|:-----:|
-| `csscolor` | `String` | Color keywords, rgb() and rgba(), hsl() and hsla(), Hexadecimal notation in [css <color> data type](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value). |
-| `R`        | `Number` or `String` | red, between 0 and 255 |
-| `G`        | `Number` or `String` | green, between 0 and 255 |
-| `B`        | `Number` or `String` | blue, between 0 and 255 |
+|:--------|:------|:-----|
+| `csscolor` | `String` | Color keywords, rgb(), rgba(), hsl(), hsla() or Hexadecimal notation in [css <color> data type](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value). |
+| `R`        | `Number` `String` | red, [0, 255] |
+| `G`        | `Number` `String` | green, [0, 255] |
+| `B`        | `Number` `String` | blue, [0, 255] |
 | `H`        | `String` | hue [angel](https://developer.mozilla.org/en-US/docs/Web/CSS/angle) |
-| `S`        | `Number` or `String` | saturation can be a number between 0 and 1, or a string, where the number 1 corresponds to 100% |
-| `L`        | `Number` or `String` | lightness can be a number between 0 and 1, or a string, where the number 1 corresponds to 100% |
-| `A`        | `Number` or `String` | alpha can be a number between 0 and 1, or a string, where the number 1 corresponds to 100% |
+| `S`        | `Number` `String` | saturation can be a number [0, 1], or a string between '0%' and '100%' |
+| `L`        | `Number` `String` | lightness can be a number [0, 1], or a string between '0%' and '100%' |
+| `A`        | `Number` `String` | alpha can be a number [0, 1], or a string between '0%' and '100%' |
 
 ## To-Do
 
@@ -67,7 +67,7 @@ const hsla = HSLA('360deg', 1, '67%', .7)
 
 ## Contributing
 
-1. Fork it (<https://github.com/gaoryrt/culor/fork>)
+1. [Fork it](https://github.com/gaoryrt/culor/fork)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
